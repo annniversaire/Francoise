@@ -1,0 +1,1942 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Françoise Cadeau de Nôel 2026</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎁</text></svg>">
+<style>
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: #efe6d5;
+  color: #27231e;
+  font-family: Arial, sans-serif;
+  overflow-x: hidden;
+}
+
+
+/* =========================
+   ÉCRAN ENVELOPPE
+========================= */
+
+#envelopeScreen {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #efe6d5;
+  transition: opacity .7s ease, visibility .7s ease;
+}
+
+#envelopeScreen.opening {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.envelope-wrapper {
+  width: min(90vw, 440px);
+  text-align: center;
+}
+
+.envelope-title {
+  font-family: Georgia, serif;
+  font-style: italic;
+  font-size: 28px;
+  margin-bottom: 35px;
+}
+
+.envelope {
+  position: relative;
+  width: 320px;
+  height: 210px;
+  margin: auto;
+  cursor: pointer;
+  perspective: 1000px;
+  filter: drop-shadow(0 18px 25px rgba(60,45,25,.16));
+  animation: envelopeVibrate 1.9s infinite;
+}
+
+
+/* Corps de l'enveloppe */
+
+.envelope-back {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: #f8eee0;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+
+/* Lettre */
+
+.letter {
+  position: absolute;
+  z-index: 2;
+  width: 250px;
+  height: 175px;
+  left: 35px;
+  top: 25px;
+  background: #fffaf1;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(60,45,25,.10);
+  transform: translateY(0) scale(.98);
+  transition:
+    transform 1.15s .18s cubic-bezier(.16,.84,.25,1),
+    box-shadow 1.15s ease;
+}
+
+.letter::before {
+  content: "🎄";
+  position: absolute;
+  left: 50%;
+  top: 48%;
+  transform: translate(-50%,-50%);
+  font-family: Georgia, serif;
+  font-size: 40px;
+  color: #786f63;
+}
+
+
+/* Rabat supérieur */
+
+.flap {
+  position: absolute;
+  z-index: 8;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  border-left: 160px solid transparent;
+  border-right: 160px solid transparent;
+  border-top: 115px solid #eadbc8;
+  transform-origin: top center;
+  backface-visibility: hidden;
+  transition: transform 1s cubic-bezier(.18,.82,.22,1);
+}
+
+
+/* Partie basse */
+
+.envelope-front {
+  position: absolute;
+  z-index: 5;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 0;
+  border-left: 160px solid transparent;
+  border-right: 160px solid transparent;
+  border-bottom: 115px solid #f1e3d1;
+}
+
+
+/* Rabat gauche */
+
+.side-left {
+  position: absolute;
+  z-index: 6;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 0;
+  border-top: 105px solid transparent;
+  border-left: 160px solid #eadbc8;
+  border-bottom: 105px solid transparent;
+}
+
+
+/* Rabat droit */
+
+.side-right {
+  position: absolute;
+  z-index: 6;
+  right: 0;
+  bottom: 0;
+  width: 0;
+  height: 0;
+  border-top: 105px solid transparent;
+  border-right: 160px solid #eadbc8;
+  border-bottom: 105px solid transparent;
+}
+
+
+/* Sceau */
+
+.seal {
+  position: absolute;
+  z-index: 10;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #D8C8AE;
+  color: white;
+  font-size: 25px;
+  box-shadow: 0 5px 12px rgba(0,0,0,.15);
+  transition:
+    opacity .45s ease,
+    transform .7s cubic-bezier(.2,.8,.2,1);
+}
+
+
+/* Ouverture en plusieurs temps */
+
+.envelope.open {
+  animation: none;
+}
+
+.envelope.open .seal {
+  opacity: 0;
+  transform:
+    translate(-50%,-50%)
+    scale(1.45)
+    rotate(18deg);
+}
+
+.envelope.open .flap {
+  transform:
+    rotateX(180deg)
+    translateY(-6px);
+}
+
+.envelope.open .letter {
+  transform:
+    translateY(-145px)
+    scale(1);
+  box-shadow:
+    0 18px 30px rgba(60,45,25,.18);
+}
+
+
+/* Vibration des boutons */
+
+#yes.vibrate,
+#no.vibrate {
+  position: relative;
+  animation: buttonVibrate .55s linear infinite !important;
+  will-change: left, top;
+}
+
+@keyframes buttonVibrate {
+  0%,100% { left:0; top:0; }
+  10% { left:-4px; }
+  20% { left:4px; }
+  30% { left:-4px; }
+  40% { left:4px; }
+  50% { left:-3px; top:1px; }
+  60% { left:3px; top:-1px; }
+  70% { left:-3px; }
+  80% { left:2px; }
+  90% { left:-1px; }
+}
+
+.click-hint {
+  margin-top: 35px;
+  color: #786f63;
+  font-size: 14px;
+  animation: hintPulse 2s infinite;
+}
+
+@keyframes envelopeVibrate {
+  0%,75%,100% {
+    transform: rotate(0deg) translateX(0);
+  }
+
+  77% {
+    transform: rotate(-1.5deg) translateX(-2px);
+  }
+
+  79% {
+    transform: rotate(1.5deg) translateX(2px);
+  }
+
+  81% {
+    transform: rotate(-1deg) translateX(-1px);
+  }
+
+  83% {
+    transform: rotate(0deg) translateX(0);
+  }
+}
+
+@keyframes hintPulse {
+  0%,100% { opacity:.55; }
+  50% { opacity:1; }
+}
+
+
+/* =========================
+   CODE D'ACCÈS 401
+   ========================= */
+.access-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 5000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 25px;
+  background: #efe6d5;
+}
+.access-gate-card {
+  width: min(90vw, 440px);
+  background: #fffaf1;
+  border-radius: 28px;
+  padding: 40px 30px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(60,45,25,.12);
+}
+.access-gate-title {
+  font-family: Georgia, serif;
+  font-style: italic;
+  font-size: 28px;
+  margin-bottom: 12px;
+}
+.access-gate-text {
+  color: #786f63;
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+.access-code-boxes {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+.access-code-box {
+  width: 58px !important;
+  height: 58px !important;
+  padding: 0 !important;
+  border: 2px solid #D8C8AE !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+  color: #27231e !important;
+  font-family: Arial, sans-serif !important;
+  font-size: 26px !important;
+  font-weight: bold !important;
+  text-align: center !important;
+  outline: none !important;
+}
+.access-code-box:focus {
+  border-color: #8B3A3A !important;
+  box-shadow: 0 0 0 3px rgba(139,58,58,.12) !important;
+}
+.access-code-validate {
+  width: auto !important;
+  margin-top: 18px;
+  background: #27231e !important;
+  color: white !important;
+}
+.access-code-validate:hover {
+  background: #fff !important;
+  color: #27231e !important;
+  border: 2px solid #27231e !important;
+}
+.access-code-message {
+  min-height: 22px;
+  margin-top: 14px;
+  color: #786f63;
+  font-size: 14px;
+}
+.access-code-message.bad {
+  color: #8B3A3A;
+}
+.access-code-message.ok {
+  color: #3f7355;
+}
+.access-code-retry-text {
+  display: none;
+  margin-top: 18px;
+  color: #786f63;
+  font-family: Georgia, serif;
+  font-style: italic;
+}
+.access-code-retry {
+  display: none !important;
+  width: 42px !important;
+  height: 42px !important;
+  margin: 12px auto 0;
+  padding: 0 !important;
+  border-radius: 50% !important;
+  background: #27231e !important;
+  color: white !important;
+  font-size: 25px !important;
+  line-height: 1 !important;
+}
+.access-code-retry.show {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+}
+@media (max-width:600px) {
+  .access-gate-card {
+    padding: 35px 22px;
+  }
+  .access-code-box {
+    width: 54px !important;
+    height: 54px !important;
+  }
+}
+
+/* =========================
+   PAGE FINALE
+========================= */
+
+#invitationPage {
+  min-height: 100vh;
+  opacity: 0;
+  transform:
+    translateY(25px);
+  transition:
+    opacity .8s ease .35s,
+    transform .8s ease .35s;
+}
+
+#invitationPage.visible {
+  opacity: 1;
+  transform:
+    translateY(0);
+}
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 25px;
+}
+
+.card {
+  width: 100%;
+  max-width: 600px;
+  background: #fffaf1;
+  border-radius: 28px;
+  padding: 55px 40px;
+  text-align: center;
+  box-shadow:
+    0 20px 60px rgba(60,45,25,.12);
+}
+
+.heart {
+  font-size: 55px;
+  margin-bottom: 10px;
+}
+
+h1 {
+  font-family: Georgia, serif;
+  font-size: 45px;
+  font-style: italic;
+  margin:
+    0 0 18px;
+}
+
+/* Révélation progressive du cadeau */
+#invitationPage.reveal-gift h1,
+    #invitationPage.reveal-gift .birthday-image {
+  animation: revealGift 5s ease-out forwards;
+  filter: blur(14px);
+  opacity: 0.35;
+}
+
+@keyframes revealGift {
+  0% {
+    filter: blur(14px);
+    opacity: 0.35;
+  }
+  100% {
+    filter: blur(0);
+    opacity: 1;
+  }
+}
+
+.message {
+  font-size: 18px;
+  line-height: 1.7;
+  color: #514a41;
+  margin:
+    0 auto 25px;
+  max-width: 480px;
+}
+
+.date {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 35px;
+}
+
+
+/* =========================
+   BOUTONS
+========================= */
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  min-height: 55px;
+}
+
+button {
+  border: none;
+  border-radius: 14px;
+  padding:
+    15px 28px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+
+/*
+   Oui
+*/
+
+#no {
+  background: #A8D5BA;
+  color: #27231e;
+  transition:
+    transform .25s ease;
+}
+
+
+/*
+   Non
+*/
+
+#yes {
+  background: #8B3A3A;
+  color: white;
+}
+
+
+/* Message après les tentatives */
+
+.too-late {
+  margin-top: 25px;
+  font-family: Georgia, serif;
+  font-size: 26px;
+  font-style: italic;
+  animation:
+    appear .3s ease;
+}
+
+.too-late span {
+  display: block;
+  margin-top: 8px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  color: #786f63;
+}
+
+
+/* =========================
+   POPUP
+========================= */
+
+.popup-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background:
+    rgba(39,35,30,.48);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 3000;
+}
+
+.popup {
+  width: min(90%, 420px);
+  background: #fffaf1;
+  border-radius: 24px;
+  padding: 38px 30px;
+  text-align: center;
+  box-shadow:
+    0 25px 70px rgba(0,0,0,.25);
+  animation:
+    popupIn .25s ease;
+}
+
+.popup-icon {
+  font-size: 43px;
+  margin-bottom: 12px;
+}
+
+.popup h2 {
+  font-family: Georgia, serif;
+  font-style: italic;
+  font-size: 30px;
+  margin:
+    0 0 10px;
+}
+
+.popup p {
+  color: #786f63;
+  line-height: 1.5;
+  margin:
+    0 0 25px;
+}
+
+.popup button {
+  background: #27231e;
+  color: white;
+}
+
+
+/* =========================
+   ANIMATIONS POPUP
+========================= */
+
+@keyframes popupIn {
+  from {
+    opacity: 0;
+    transform:
+      scale(.9);
+  }
+
+  to {
+    opacity: 1;
+    transform:
+      scale(1);
+  }
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform:
+      translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform:
+      translateY(0);
+  }
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 600px) {
+
+  .envelope {
+    width: 280px;
+    height: 185px;
+  }
+
+  .flap {
+    border-left-width: 140px;
+    border-right-width: 140px;
+    border-top-width: 100px;
+  }
+
+  .envelope-front {
+    border-left-width: 140px;
+    border-right-width: 140px;
+    border-bottom-width: 100px;
+  }
+
+  .side-left {
+    border-left-width: 140px;
+    border-top-width: 92px;
+    border-bottom-width: 92px;
+  }
+
+  .side-right {
+    border-right-width: 140px;
+    border-top-width: 92px;
+    border-bottom-width: 92px;
+  }
+
+  .letter {
+    width: 220px;
+    height: 155px;
+    left: 30px;
+  }
+
+  .card {
+    padding:
+      45px 25px;
+  }
+
+  h1 {
+    font-size: 38px;
+  }
+
+  .message {
+    font-size: 16px;
+  }
+
+  .birthday-image {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+
+.birthday-image {
+  display: block;
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  margin: 25px auto 0;
+  border-radius: 20px;
+  object-fit: contain;
+}
+
+
+/* CONTRÔLES PAGE FINALE */
+.final-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  margin-top: 28px;
+}
+.final-controls .click-hint { margin-top: 0; }
+.replay-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #27231e;
+  color: white;
+  text-decoration: none;
+  font-size: 25px;
+  line-height: 1;
+  box-shadow: 0 6px 16px rgba(39,35,30,.18);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.replay-button:hover {
+  transform: scale(1.08);
+  box-shadow: 0 8px 20px rgba(39,35,30,.25);
+}
+.donate-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 10px 18px;
+  border-radius: 10px;
+  background: #ffc439;
+  color: #111;
+  text-decoration: none;
+  font-weight: bold;
+  box-shadow: 0 5px 14px rgba(0,0,0,.12);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.donate-link:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 7px 18px rgba(0,0,0,.18);
+}
+.paypal-mark { font-size: 14px; color: #003087; }
+.message {
+  font-size: 17px;
+  line-height: 1.6;
+  color: #514a41;
+  margin: 0 auto 25px;
+  max-width: 500px;
+}
+
+.intro-message {
+  margin: 0 0 22px;
+  font-size: 18px;
+}
+
+.choice {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  text-align: left;
+  padding: 14px 16px;
+  margin: 12px 0;
+  border-radius: 16px;
+  background: #f8f1e6;
+}
+
+.choice-icon {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.choice b {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 16px;
+}
+
+.choice p {
+  margin: 0;
+  font-size: 15px;
+}
+
+.choice span {
+  font-size: 14px;
+  color: #786f63;
+}
+
+.yes-choice {
+  border-left: 4px solid #A8D5BA;
+}
+
+.no-choice {
+  border-left: 4px solid #8B3A3A;
+}
+
+/* États des choix après sélection */
+.choice {
+  transition: opacity .35s ease, filter .35s ease, transform .35s ease,
+              background .35s ease, box-shadow .35s ease;
+}
+
+.choice.is-disabled {
+  opacity: .38;
+  filter: grayscale(1);
+}
+
+.choice.is-highlighted {
+  opacity: 1;
+  filter: none;
+  background: #fff3a8;
+  box-shadow: 0 0 0 3px rgba(255,196,57,.35), 0 8px 22px rgba(60,45,25,.12);
+  transform: scale(1.02);
+}
+
+.choice.is-hidden {
+  display: none;
+}
+
+
+
+/* Hover contraste inverse — tous les boutons sauf le « Oui qui fuit » (#no) */
+button:not(#no),
+.donate-link {
+  transition: background .2s ease, color .2s ease, border-color .2s ease,
+              transform .2s ease, box-shadow .2s ease;
+}
+
+button:not(#no):hover,
+.donate-link:hover {
+  background: #fff !important;
+  color: #27231e !important;
+  border: 2px solid #27231e !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,.18);
+}
+
+button:not(#no):hover *,
+.donate-link:hover * {
+  color: #27231e !important;
+}
+
+/* Le bouton « Oui qui fuit » conserve exactement son comportement */
+#no:hover {
+  border-color: initial;
+}
+</style>
+
+</head>
+
+
+<body>
+
+<canvas id="snakeConfettiCanvas" aria-hidden="true"
+style="position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:9999;"></canvas>
+
+
+
+<!-- =========================
+     MUSIQUE
+========================= -->
+
+<audio id="operaMusic" preload="auto">
+  <source src="musique.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="supriseMusic" preload="auto">
+  <source src="suprise_musique.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="ringMusic" src="Ring.mp3" preload="auto" loop></audio>
+
+
+<!-- =========================
+     ÉCRAN ENVELOPPE
+========================= -->
+
+<div id="accessGate" class="access-gate" aria-live="polite">
+  <div class="access-gate-card">
+    <div class="access-gate-title">Code d'accès</div>
+    <div class="access-gate-text">Entre le code à 3 chiffres pour continuer</div>
+    
+    <div class="access-code-boxes">
+      <input id="accessCode1" class="access-code-box" type="text"
+             inputmode="numeric" maxlength="1" autocomplete="one-time-code"
+             aria-label="Premier chiffre">
+      <input id="accessCode2" class="access-code-box" type="text"
+             inputmode="numeric" maxlength="1" autocomplete="off"
+             aria-label="Deuxième chiffre">
+      <input id="accessCode3" class="access-code-box" type="text"
+             inputmode="numeric" maxlength="1" autocomplete="off"
+             aria-label="Troisième chiffre">
+    </div>
+
+    <button type="button" id="accessCodeValidate" class="access-code-validate">
+      Valider
+    </button>
+
+    <div id="accessCodeMessage" class="access-code-message"></div>
+
+    <button type="button" id="accessCodeRetry" class="access-code-retry"
+            aria-label="Recommencer" title="Recommencer">↻</button>
+  </div>
+</div>
+
+<div id="envelopeScreen">
+
+  <div class="envelope-wrapper">
+
+    <div class="envelope-title">
+      Bonjour Françoise ❤️ Tu as reçu un message
+      de la plus haute importance d'Abdel
+    </div>
+
+
+    <div id="envelope" class="envelope">
+
+      <div class="envelope-back"></div>
+
+      <div class="letter"></div>
+
+      <div class="flap"></div>
+
+      <div class="envelope-front"></div>
+
+      <div class="side-left"></div>
+
+      <div class="side-right"></div>
+
+      <div class="seal">
+        🤔
+      </div>
+
+    </div>
+
+
+    <div class="click-hint">
+      Clique sur l'enveloppe pour l'ouvrir
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =========================
+     INVITATION
+========================= -->
+
+<div id="invitationPage">
+
+  <div class="page">
+
+    <div class="card">
+
+      <div class="heart">
+      </div>
+
+
+      <div class="date">
+
+        Coucou Françoise, pour Nöel 2026, j'ai pensé à un cadeau pour toi
+      </div>
+
+      <div class="message">
+
+  <p class="intro-message">
+    ça te dit d'aller <u>quelque part</u> avec moi ou avec Aurore 🤔 ? 
+	<BR></BR>Pour confirmer la réservation, une petite action est requise…
+    Tu n’as pas le choix : il faut cliquer sur <B>Oui</B> ou <B>Non</B>.
+  </p>
+</div>
+
+      <div id="tooLate"></div>
+
+      <br>
+
+
+      <div class="buttons">
+
+
+        <!--
+          ATTENTION :
+          Ce bouton vert est "Oui"
+          mais son id est "no"
+        -->
+
+        <button id="no">
+          Oui, j'accepte🎁
+        </button>
+
+
+        <!--
+          Ce bouton rouge est "Non"
+          mais son id est "yes"
+        -->
+
+        <button id="yes">
+          Non, je décline 👿
+        </button>
+
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<!-- =========================
+     POPUP
+========================= -->
+
+<div id="responsePopup" class="popup-overlay">
+
+  <div class="popup">
+
+    <div class="access-gate-title">
+      La réservation est annulée 😔
+    </div>
+
+    <button id="closePopup">
+      Ferme et découvre ton cadeau de consolation 
+    </button>
+
+  </div>
+
+</div>
+
+<!-- POPUP PAYPAL -->
+<div id="donationPopup" class="popup-overlay">
+  <div class="popup">
+    <div class="access-gate-title">Tu veux vraiment faire un don 😮</div>
+    <button id="closeDonationPopup">Tu es un amour 😍</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+<script>
+    // PayPal utilise une popup dédiée.
+    // La première popup reste inchangée : « La réservation est annulée 😔 ».
+    document.addEventListener("click", function (event) {
+      const donateButton = event.target.closest("#donateLink");
+
+      if (donateButton) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const donationPopup = document.getElementById("donationPopup");
+        if (donationPopup) {
+          donationPopup.style.display = "flex";
+        }
+        return;
+      }
+
+      if (event.target.closest("#closeDonationPopup")) {
+        const donationPopup = document.getElementById("donationPopup");
+        if (donationPopup) {
+          donationPopup.style.display = "none";
+        }
+      }
+    });
+
+</script>
+
+<script>
+
+/* =========================
+   CODE D'ACCÈS 401
+========================= */
+(function () {
+  const gate = document.getElementById("accessGate");
+  const inputs = [
+    document.getElementById("accessCode1"),
+    document.getElementById("accessCode2"),
+    document.getElementById("accessCode3")
+  ];
+  const validate = document.getElementById("accessCodeValidate");
+  const message = document.getElementById("accessCodeMessage");
+  const retry = document.getElementById("accessCodeRetry");
+  const ring = document.getElementById("ringMusic");
+
+  async function sha256(text) {
+    const data = new TextEncoder().encode(text);
+    const buffer = await crypto.subtle.digest("SHA-256", data);
+    return Array.from(new Uint8Array(buffer))
+      .map(b => b.toString(16).padStart(2, "0"))
+      .join("");
+  }
+
+  inputs.forEach((input, index) => {
+    input.addEventListener("input", function () {
+      const value = this.value.replace(/\D/g, "");
+
+      if (value.length > 1) {
+        const digits = value.slice(0, 3);
+        digits.split("").forEach((digit, offset) => {
+          if (inputs[index + offset]) inputs[index + offset].value = digit;
+        });
+        inputs[Math.min(index + digits.length, 2)].focus();
+        return;
+      }
+
+      this.value = value.slice(0, 1);
+      if (this.value && index < 2) inputs[index + 1].focus();
+    });
+
+    input.addEventListener("keydown", function (e) {
+      if (e.key === "Backspace" && !this.value && index > 0) {
+        e.preventDefault();
+        inputs[index - 1].focus();
+      }
+
+      if (e.key === "ArrowLeft" && index > 0) {
+        e.preventDefault();
+        inputs[index - 1].focus();
+      }
+
+      if (e.key === "ArrowRight" && index < 2) {
+        e.preventDefault();
+        inputs[index + 1].focus();
+      }
+
+      if (e.key === "Enter") {
+        e.preventDefault();
+        validate.click();
+      }
+    });
+
+    input.addEventListener("paste", function (e) {
+      e.preventDefault();
+
+      const pasted = (e.clipboardData || window.clipboardData)
+        .getData("text")
+        .replace(/\D/g, "")
+        .slice(0, 3);
+
+      pasted.split("").forEach((digit, i) => {
+        if (inputs[i]) inputs[i].value = digit;
+      });
+
+      if (pasted.length === 3) {
+        validate.focus();
+      } else if (pasted.length) {
+        inputs[pasted.length].focus();
+      }
+    });
+  });
+
+  validate.addEventListener("click", async function () {
+    const code = inputs.map(input => input.value).join("");
+
+    if (code.length !== 3) {
+      message.textContent = "Code incomplet.";
+      message.className = "access-code-message bad";
+      return;
+    }
+
+    validate.disabled = true;
+    message.textContent = "Vérification…";
+    message.className = "access-code-message";
+
+    const hash = await sha256(code);
+
+    if (hash === "dcaadad1cfce437735b81ab025f776e5857e48558c47f6960e6a5f2595664a85") {
+      message.textContent = "Code accepté ✓";
+      message.className = "access-code-message ok";
+
+      ring.currentTime = 0;
+      ring.play().catch(() => {});
+
+      setTimeout(() => {
+        gate.remove();
+      }, 450);
+    } else {
+      message.textContent = " Mauvais code ❌";
+      message.className = "access-code-message bad";
+      retry.classList.add("show");
+      validate.disabled = false;
+
+      inputs.forEach(input => input.value = "");
+      inputs[0].focus();
+    }
+  });
+
+  retry.addEventListener("click", function () {
+    window.location.href = "";
+  });
+
+  inputs[0].focus();
+})();
+
+
+/* =========================
+   RÉFÉRENCES
+========================= */
+
+const envelope =
+  document.getElementById("envelope");
+
+const envelopeScreen =
+  document.getElementById("envelopeScreen");
+
+const invitationPage =
+  document.getElementById("invitationPage");
+
+const operaMusic =
+  document.getElementById("operaMusic");
+
+const supriseMusic =
+  document.getElementById("supriseMusic");
+
+/*
+   IMPORTANT :
+
+   Oui = id="no"
+   Non = id="yes"
+*/
+
+const noButton =
+  document.getElementById("no");
+
+const yesButton =
+  document.getElementById("yes");
+
+const tooLate =
+  document.getElementById("tooLate");
+
+
+/* =========================
+   OUVERTURE ENVELOPPE
+========================= */
+
+
+/* =========================================================
+   🎉 SNAKE FLOW — jaillissement depuis l'enveloppe
+   ========================================================= */
+
+function launchSnakeFlow() {
+  const canvas = document.getElementById("snakeConfettiCanvas");
+  if (!canvas) return;
+
+  const ctx = canvas.getContext("2d");
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+  let w = window.innerWidth;
+  let h = window.innerHeight;
+
+  canvas.width = w * dpr;
+  canvas.height = h * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  const r = envelope.getBoundingClientRect();
+
+  // Le point de départ est exactement au centre de l'enveloppe.
+  const ox = r.left + r.width / 2;
+  const oy = r.top + r.height / 2;
+
+  const colors = [
+    "#e85d75",
+    "#f3b33d",
+    "#69b578",
+    "#5b8def",
+    "#b56ad9",
+    "#f07c4f"
+  ];
+
+  const particles = [];
+
+  /*
+     PHASE 1
+     Un noyau très dense sort de l'enveloppe.
+  */
+  function burstParticle(i) {
+
+    const angle =
+      -Math.PI / 2 +
+      (Math.random() - 0.5) * 1.35;
+
+    const speed =
+      10 + Math.random() * 10;
+
+    particles.push({
+      x: ox + (Math.random() - 0.5) * 20,
+      y: oy + (Math.random() - 0.5) * 15,
+
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+
+      gravity: 0.11 + Math.random() * 0.07,
+
+      size: 4 + Math.random() * 8,
+
+      rotation: Math.random() * Math.PI * 2,
+      rotationSpeed: (Math.random() - 0.5) * 0.32,
+
+      phase: Math.random() * Math.PI * 2,
+      wave: 0.5 + Math.random() * 1.3,
+
+      life: 0,
+      maxLife: 135 + Math.random() * 110,
+
+      color: colors[Math.floor(Math.random() * colors.length)],
+
+      shape:
+        Math.random() < 0.18
+          ? "star"
+          : Math.random() < 0.5
+            ? "circle"
+            : "rect"
+    });
+  }
+
+  /*
+     PHASE 2
+     De véritables "serpents" de confettis partent
+     dans plusieurs directions.
+  */
+  function snakeParticle(index, snake) {
+
+    const centerAngle = [
+      -2.55,
+      -2.05,
+      -1.55,
+      -1.10,
+      -0.60
+    ][snake];
+
+    const angle =
+      centerAngle +
+      (Math.random() - 0.5) * 0.30;
+
+    const speed =
+      6 + Math.random() * 5;
+
+    particles.push({
+      x: ox + (Math.random() - 0.5) * 14,
+      y: oy + (Math.random() - 0.5) * 12,
+
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+
+      gravity: 0.095 + Math.random() * 0.055,
+
+      size: 4 + Math.random() * 7,
+
+      rotation: Math.random() * Math.PI * 2,
+      rotationSpeed: (Math.random() - 0.5) * 0.25,
+
+      phase:
+        snake * 1.7 +
+        index * 0.18,
+
+      wave:
+        0.8 + snake * 0.12,
+
+      life: 0,
+      maxLife:
+        145 + Math.random() * 120,
+
+      color:
+        colors[(index + snake) % colors.length],
+
+      shape:
+        Math.random() < 0.15
+          ? "star"
+          : Math.random() < 0.45
+            ? "circle"
+            : "rect"
+    });
+  }
+
+  // Explosion compacte.
+  for (let i = 0; i < 150; i++) {
+    setTimeout(() => burstParticle(i), i * 2);
+  }
+
+  // Cinq flux successifs pour donner une vraie impression de serpent.
+  for (let snake = 0; snake < 5; snake++) {
+    for (let i = 0; i < 38; i++) {
+      setTimeout(
+        () => snakeParticle(i, snake),
+        120 + snake * 85 + i * 8
+      );
+    }
+  }
+
+  function drawStar(radius) {
+
+    ctx.beginPath();
+
+    for (let i = 0; i < 10; i++) {
+
+      const rr =
+        i % 2 === 0
+          ? radius
+          : radius * 0.42;
+
+      const a =
+        -Math.PI / 2 +
+        i * Math.PI / 5;
+
+      const x =
+        Math.cos(a) * rr;
+
+      const y =
+        Math.sin(a) * rr;
+
+      if (i === 0)
+        ctx.moveTo(x, y);
+      else
+        ctx.lineTo(x, y);
+    }
+
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  let frame = 0;
+
+  function animate() {
+
+    ctx.clearRect(0, 0, w, h);
+
+    for (let i = particles.length - 1; i >= 0; i--) {
+
+      const p = particles[i];
+
+      p.life++;
+
+      /*
+         Trajectoire ondulante :
+         le mouvement latéral augmente légèrement
+         pour donner l'impression d'un ruban.
+      */
+      const wave =
+        Math.sin(
+          p.life * 0.105 +
+          p.phase
+        ) * p.wave;
+
+      p.x += p.vx + wave;
+      p.y += p.vy;
+
+      // Gravité progressive.
+      p.vy += p.gravity;
+
+      // Résistance de l'air.
+      p.vx *= 0.996;
+
+      // Rotation naturelle.
+      p.rotation += p.rotationSpeed;
+
+      const progress =
+        p.life / p.maxLife;
+
+      // Disparition douce à la fin.
+      const alpha =
+        progress > 0.70
+          ? Math.max(
+              0,
+              1 -
+              (progress - 0.70) / 0.30
+            )
+          : 1;
+
+      ctx.save();
+
+      ctx.globalAlpha = alpha;
+
+      ctx.translate(
+        p.x,
+        p.y
+      );
+
+      ctx.rotate(
+        p.rotation
+      );
+
+      ctx.fillStyle =
+        p.color;
+
+      if (p.shape === "star") {
+
+        drawStar(p.size);
+
+      } else if (p.shape === "circle") {
+
+        ctx.beginPath();
+
+        ctx.arc(
+          0,
+          0,
+          p.size * 0.55,
+          0,
+          Math.PI * 2
+        );
+
+        ctx.fill();
+
+      } else {
+
+        ctx.fillRect(
+          -p.size / 2,
+          -p.size / 2,
+          p.size,
+          p.size * 0.65
+        );
+      }
+
+      ctx.restore();
+
+      if (
+        p.life >= p.maxLife ||
+        p.y > h + 100 ||
+        p.x < -120 ||
+        p.x > w + 120
+      ) {
+
+        particles.splice(i, 1);
+      }
+    }
+
+    frame++;
+
+    if (
+      particles.length > 0 ||
+      frame < 220
+    ) {
+
+      requestAnimationFrame(
+        animate
+      );
+
+    } else {
+
+      ctx.clearRect(
+        0,
+        0,
+        w,
+        h
+      );
+    }
+  }
+
+  animate();
+
+  /*
+     EXPLOSIONS CANVAS-C0NFETTI
+     Elles renforcent le jaillissement sans remplacer
+     l'animation Snake Flow.
+  */
+  if (typeof confetti === "function") {
+
+    // Explosion directement sur l'enveloppe.
+    confetti({
+      particleCount: 130,
+      spread: 75,
+      startVelocity: 48,
+      gravity: 0.85,
+      scalar: 1.05,
+      origin: {
+        x: ox / w,
+        y: oy / h
+      }
+    });
+
+    // Deux tirs latéraux.
+    setTimeout(() => {
+
+      confetti({
+        particleCount: 95,
+        angle: 62,
+        spread: 65,
+        startVelocity: 38,
+        origin: {
+          x: 0,
+          y: 0.72
+        }
+      });
+
+      confetti({
+        particleCount: 95,
+        angle: 118,
+        spread: 65,
+        startVelocity: 38,
+        origin: {
+          x: 1,
+          y: 0.72
+        }
+      });
+
+    }, 420);
+
+    // Dernière pluie au-dessus de la page.
+    setTimeout(() => {
+
+      confetti({
+        particleCount: 120,
+        spread: 130,
+        startVelocity: 24,
+        gravity: 0.65,
+        scalar: 0.9,
+        origin: {
+          x: 0.5,
+          y: 0.05
+        }
+      });
+
+    }, 850);
+  }
+}
+
+window.addEventListener("resize", () => {
+  const canvas = document.getElementById("snakeConfettiCanvas");
+  if (!canvas) return;
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  canvas.width = window.innerWidth * dpr;
+  canvas.height = window.innerHeight * dpr;
+  const ctx = canvas.getContext("2d");
+  if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+});
+
+
+envelope.addEventListener(
+  "click",
+  function () {
+
+    const ring = document.getElementById("ringMusic");
+    if (ring) {
+      ring.pause();
+      ring.currentTime = 0;
+    }
+
+
+    /*
+       Lance la musique au clic
+       sur l'enveloppe.
+
+       Le clic utilisateur permet
+       au navigateur d'autoriser
+       la lecture audio.
+    */
+    supriseMusic.volume = 0.5;
+	supriseMusic.currentTime = 1;	
+    supriseMusic.play().catch(() => {});
+
+
+    /*
+       Empêche plusieurs clics
+    */
+
+    if (
+      envelope.classList.contains("open")
+    ) {
+
+      return;
+
+    }
+
+
+    /*
+       Ouvre l'enveloppe
+    */
+
+    // 🎉 Snake Flow
+    launchSnakeFlow();
+
+    envelope.classList.add("open");
+
+
+    /*
+       FAIT VIBRER LE BOUTON VERT OUI
+    */
+
+    noButton.classList.remove("vibrate");
+
+
+    /*
+       Force le navigateur à recalculer
+       l'élément avant de relancer
+       l'animation.
+    */
+
+    void noButton.offsetWidth;
+
+    noButton.classList.add("vibrate");
+
+
+    /*
+       Après l'ouverture :
+       affiche la page.
+    */
+
+    setTimeout(
+      function () {
+
+        envelopeScreen.classList.add(
+          "opening"
+        );
+
+        invitationPage.classList.add(
+          "visible"
+        );
+
+      },
+      850
+    );
+
+  }
+);
+
+
+
+/* =========================
+   BOUTON NON
+========================= */
+
+let attempts = 0;
+
+
+function escapeNo() {
+
+  attempts++;
+
+
+  /*
+     À la 5e tentative
+  */
+
+  if (attempts >= 5) {
+
+    tooLate.innerHTML = `
+      <div class="too-late">
+        Oh quel dommage ! Tu es obligée de cliquer sur Non, je décline l'invitation 😔
+      </div>
+    `;
+
+    // Faire disparaître le bouton Oui
+    noButton.style.display = "none";
+
+    // Faire disparaître le bloc Oui
+    // et mettre le bloc Non en surbrillance jaune
+    const yesChoiceBlock = document.querySelector(".yes-choice");
+    const noChoiceBlock = document.querySelector(".no-choice");
+
+    if (yesChoiceBlock) {
+      yesChoiceBlock.classList.add("is-hidden", "is-disabled");
+    }
+
+    if (noChoiceBlock) {
+      noChoiceBlock.classList.add("is-highlighted");
+    }
+
+    // Garder le bouton Non visible
+    yesButton.style.display = "inline-block";
+
+    // Relancer proprement l'animation
+    yesButton.classList.remove("vibrate");
+    void yesButton.offsetWidth;
+    // yesButton.classList.add("vibrate");
+
+    return;
+  }
+
+
+  /*
+     Le bouton Oui devient
+     plus petit à chaque tentative.
+  */
+
+  const scale =
+    1 - (attempts * .18);
+
+
+  /*
+     Et il s'éloigne.
+  */
+
+  const x =
+    Math.random() * 180 - 90;
+
+  const y =
+    Math.random() * 80 - 40;
+
+
+  noButton.style.transform =
+    `translate(${x}px, ${y}px) scale(${scale})`;
+
+}
+
+
+noButton.addEventListener(
+  "mouseenter",
+  escapeNo
+);
+
+
+noButton.addEventListener(
+  "click",
+  escapeNo
+);
+
+
+
+/* =========================
+   BOUTON OUI
+========================= */
+
+const responsePopup =
+  document.getElementById(
+    "responsePopup"
+  );
+
+const closePopup =
+  document.getElementById(
+    "closePopup"
+  );
+
+
+yesButton.addEventListener(
+  "click",
+  function () {
+
+    responsePopup.style.display =
+      "flex";
+
+    yesButton.style.display =
+      "none";
+
+    noButton.style.display =
+      "none";
+
+    tooLate.innerHTML = "";
+
+  }
+);
+
+
+
+/* =========================
+   FERMER POPUP
+========================= */
+
+closePopup.addEventListener(
+  "click",
+  function () {
+
+
+    responsePopup.style.display =
+      "none";
+	  
+    // 🎵 Lance la musique uniquement après le clic sur FERMER
+    supriseMusic.pause();
+	supriseMusic.currentTime = 0;
+	operaMusic.currentTime = 0;
+    operaMusic.volume = 0.5;
+    operaMusic.play().catch(() => {});
+
+
+
+    /*
+       Après fermeture :
+       uniquement le message
+       Joyeux anniversaire.
+    */
+
+    invitationPage.innerHTML = `
+
+      <div class="page">
+
+        <div class="card">
+
+          <h1>
+            Tu es invitée à l'Opéra GARNIER à Paris 🎶
+          </h1>
+            <div class="birthday-image">
+              <B>Quand</B> : Samedi 27 Janvier 2027 - 19h00
+             </div>		  
+          <img
+            src="Anniversaire.jpg"
+            alt="Joyeux Nöel FK"
+            class="birthday-image"
+          >
+
+          <div class="final-controls">
+
+            <div class="click-hint">
+              Rejouer
+              <a
+                id="replayAnimation"
+                class="replay-button"
+                href="https://annniversaire.github.io/Francoise"
+                aria-label="Rejouer l'animation complète"
+                title="Rejouer l'animation complète"
+              >↻</a>
+            </div>
+
+            <div class="click-hint">
+              Soutenez la fondation BELGROUM qui oeuvre pour le bien-être de la famille BELGROUM 💙
+              <br><br>
+              <button
+                type="button"
+                class="donate-link"
+                id="donateLink"
+                aria-label="Soutenir la fondation BELGROUM"
+              ><span class="paypal-mark">PayPal Faire un don</span></button>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    `;
+
+    // Révélation progressive du titre après le clic sur « Fermer »
+    invitationPage.classList.add("reveal-gift");
+
+  }
+);
+
+
+</script>
+
+
+</body>
+</html>	
