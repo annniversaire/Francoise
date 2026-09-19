@@ -1931,6 +1931,20 @@ closePopup.addEventListener(
     // Révélation progressive du titre après le clic sur « Fermer »
     invitationPage.classList.add("reveal-gift");
 
+    // 📱 Smartphone : revenir systématiquement tout en haut
+    // après le remplacement du contenu de la page.
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "instant"
+    });
+
+    // Sécurité supplémentaire pour iPhone / Android :
+    // le navigateur peut recalculer la hauteur après le innerHTML.
+    requestAnimationFrame(() => {
+      window.scrollTo(0, 0);
+    });
+
   }
 );
 
